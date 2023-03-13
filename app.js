@@ -7,7 +7,10 @@ import cors from 'cors';
 import xss from 'xss-clean';
 import rateLimiter from 'express-rate-limit';
 
-
+import fs from "fs"; 
+import swaggerUI from 'swagger-ui-express';
+import YAML from "yamljs";
+const swaggerDocument = YAML.parse(fs.readFileSync('./swagger.yaml', 'utf8'));
 
 import express from 'express';
 const app = express();
@@ -34,9 +37,11 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 
-app.get('/',(req,res)=>{
-    res.send("jobs api");
+app.get("/",(req,res)=>{
+    res.send('<h1>Jobs API</h1><a href="/api-docs">Documentation</a>')
 })
+app.use("/api-docs",swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+
 // routes
 app.use("/api/v1/auth",authRouter);
 app.use("/api/v1/jobs",authenticationMiddleware , jobsRouter);
