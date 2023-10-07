@@ -8,10 +8,14 @@ import xss from 'xss-clean';
 import rateLimiter from 'express-rate-limit';
 
 
-
+import bodyParser from "body-parser";
+import multer from "multer";
 import express from 'express';
 const app = express();
-
+const form = multer();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(form.array());
 // connect db
 import connectDB from './db/connect.js';
 // routes
