@@ -37,6 +37,20 @@ const auth = {
             setting: { success: "1", massage: "login success..." },
             data: { user: user.name, token }
         });
+    },
+    getAllUser: async (req, res, next) => {
+        try {
+
+            const user = await User.find().sort('createdAt');
+
+            res.status(200).json({
+                setting: { success: "1", massage: "fetched all Jobs..." },
+                data: [...user]
+            });
+
+        } catch {
+
+        }
     }
 }
 
