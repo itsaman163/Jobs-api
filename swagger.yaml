@@ -63,6 +63,20 @@ paths:
           headers: {}
       deprecated: false
       security: []
+  /auth:
+    get:
+      tags:
+      - auth
+      Summary: Get All Registered User
+      operationId: getAllUser
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
   /jobs:
     post:
       tags:
