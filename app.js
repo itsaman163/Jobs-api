@@ -38,12 +38,11 @@ app.use(form.any());
 // connect db
 import connectDB from './db/connect.js';
 // routes
-import authRouter from './routes/auth.js';
-import jobsRouter from './routes/jobs.js';
+import Router from './routes/index.js';
+
 // error handler
 import notFoundMiddleWare from './middleware/not-found.js';
 import errorHandlerMiddleWare from './middleware/error-handler.js';
-import authenticationMiddleware from './middleware/authentication.js';
 
 app.use(express.static('./public'))
 app.use(express.json());
@@ -63,8 +62,7 @@ app.get("/", (req, res) => {
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
 // routes
-app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/jobs", authenticationMiddleware, jobsRouter);
+app.use("/api/v1", Router);
 
 app.use(notFoundMiddleWare);
 app.use(errorHandlerMiddleWare);
@@ -72,14 +70,11 @@ app.use(errorHandlerMiddleWare);
 
 const port = process.env.PORT || 3000;
 
-const start = async () => {
+(async () => {
     try {
         await connectDB(process.env.MONGO_URI);
         app.listen(port, console.log(`Server is listning on the port ${port}...`));
-
     } catch (error) {
-        console.log(error)
+        console.log(error.message);
     }
-}
-
-start();
+})();
