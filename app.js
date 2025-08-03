@@ -1,16 +1,20 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import 'express-async-errors';
-// extra security package
+
+/** extra security package */
 import helmet from 'helmet';
 import cors from 'cors';
 import xss from 'xss-clean';
 import rateLimiter from 'express-rate-limit';
+/** */
 
 
-import bodyParser from "body-parser";
+import bodyParser from "body-parser"; /** Used For parse body data */
 import multer from "multer";
 import fs from "fs";
+
+/**Used For swagger UI */
 import swaggerUI from 'swagger-ui-express';
 import YAML from "yamljs";
 const swaggerDocument = YAML.parse(fs.readFileSync('./swagger.yaml', 'utf8'));
