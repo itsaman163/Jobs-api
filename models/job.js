@@ -9,12 +9,30 @@ const JobSchema = new mongoose.Schema({
     position: {
         type: String,
         required: [true, "Please provide position!!"],
-        maxlength: 50
+        maxlength: 150
     },
     status: {
         type: String,
         enum: ['interview', 'declined', 'pending'],
         default: 'pending',
+    },
+    number: {
+        type: Number,
+        required: [true, "Please Enter Mobile Number"]
+    },
+    link: {
+        type: String,
+        required: [false]
+    },
+    noticePeriod: {
+        type: Number,
+        required: [true, "Notice Period is Required"]
+    },
+    ctc: {
+        type: Number
+    },
+    ectc: {
+        type: Number
     },
     createdBy: {
         type: mongoose.Types.ObjectId,

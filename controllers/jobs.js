@@ -1,10 +1,38 @@
 import Job from "../models/job.js";
 import BadRequestError from "../errors/bad-request.js";
 import notFount from "../middleware/not-found.js";
+import moment from "moment";
+import mongoose from "mongoose";
 
 const jobs = {
     getAllJobs: async (req, res) => {
-        const jobs = await Job.find({ createdBy: req.user.userId }).sort('createdAt');
+        let jobs = await Job.aggregate([
+            {
+                $lookup:
+                {
+                    from: 'users',
+                    localField: 'createdBy',
+                    foreignField: '_id',
+                    as: 'userInfo'
+                }
+            },
+            {
+                $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) }
+            },
+            {
+                $project: {
+                    company: 1, position: 1, status: 1,
+                    number: 1, link: 1, noticePeriod: 1,
+                    ctc: 1, ectc: 1, createdBy: 1,
+                    createdAt: 1, updatedAt: 1, 'userInfo.name': 1
+                }
+            }]);
+
+        jobs = jobs.map(ele => {
+            ele.createdAt = moment(ele.createdAt).format('YYYY-MM-DD HH:MM');
+            console.log(ele.createdAt)
+            return ele;
+        })
         res.status(200).json({
             setting: { success: "1", massage: "fetched all Jobs..." },
             data: { jobs }
