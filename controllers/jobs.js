@@ -30,7 +30,6 @@ const jobs = {
 
         jobs = jobs.map(ele => {
             ele.createdAt = moment(ele.createdAt).format('YYYY-MM-DD HH:MM');
-            console.log(ele.createdAt)
             return ele;
         })
         res.status(200).json({
