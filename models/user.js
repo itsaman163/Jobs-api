@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Please provide password!!"],
         minlength: 6,
     },
-    profile_picture: {
+    profilePicture: {
         type: String
     },
     role: {

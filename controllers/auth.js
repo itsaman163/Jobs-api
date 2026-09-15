@@ -1,11 +1,11 @@
 import BadRequestError from "../errors/bad-request.js";
 import UnauthenticatedError from "../errors/bad-request.js";
 import User from "../models/user.js";
+import CommonController from "./v1/common.js";
 // import bcrypt from "bcryptjs";
 const auth = {
     register: async (req, res) => {
         const req_body = req.body;
-        if (req.files) req_body.profile_picture = req.files[0].path;
         const user = await User.create(req_body);
         const token = user.generateJwt();
         res.status(200).json({
@@ -39,8 +39,8 @@ const auth = {
     getAllUser: async (req, res, next) => {
         try {
             const user = await User.find().sort('createdAt');
-            for(const data of user) {
-                data.profile_picture = `http://localhost:5000${data.profile_picture}`;
+            for (const data of user) {
+                data.profilePicture = data?.profilePicture ? await CommonController.generateReadUrl(data.profilePicture) : "--";
             }
             res.status(200).json({
                 setting: { success: "1", massage: "fetched all Jobs..." },
