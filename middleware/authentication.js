@@ -10,7 +10,6 @@ const authenticationMiddleware = (req, resp, next) => {
     const token = authHeader.split(' ')[1]
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET);
-
         // const user = User.findById(payload.userId).select('-password');
         req.user = { userId: payload.userId, name: payload.name };
         next();
